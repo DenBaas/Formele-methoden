@@ -42,21 +42,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Automata.cs" />
-    <Compile Include="DFA\DFA.cs" />
-    <Compile Include="Grammatica.cs" />
-    <Compile Include="NDFA\NDFA.cs" />
-    <Compile Include="NFA.cs" />
-    <Compile Include="ProductieRegel.cs" />
+    <Compile Include="NFA\DFA\DFA.cs" />
+    <Compile Include="NFA\Toestand.cs" />
+    <Compile Include="ReguliereGrammatica\Grammatica.cs" />
+    <Compile Include="NFA\NDFA\NDFA.cs" />
+    <Compile Include="NFA\NFA.cs" />
+    <Compile Include="ReguliereGrammatica\ProductieRegel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Transition.cs" />
+    <Compile Include="ReguliereGrammatica\Transition.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Conversie\" />
     <Folder Include="ReguliereExpressie\" />
-    <Folder Include="ReguliereGrammatica\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
