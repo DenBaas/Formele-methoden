@@ -11,8 +11,29 @@ namespace Eindopdracht
         static void Main(string[] args)
         {
             var a =  getExampleSlide8Lesson2();
-
+            var b = voorbeeldGrammatica();
+            Console.WriteLine(b.toString());
             Console.WriteLine("test");
+        }
+
+        static public Grammatica<char> voorbeeldGrammatica()
+        {
+            Grammatica<char> gr = null;
+            ProductieRegel<char> p1 = new ProductieRegel<char>("A", 'a', "B");
+            ProductieRegel<char> p2 = new ProductieRegel<char>("A", 'b', "A");
+            ProductieRegel<char> p3 = new ProductieRegel<char>("B", 'a', "B");
+            ProductieRegel<char> p4 = new ProductieRegel<char>("B", 'b', "A");
+            ProductieRegel<char> p5 = new ProductieRegel<char>("A", '$', "C");
+            ProductieRegel<char> p6 = new ProductieRegel<char>("C", 'a', "B");
+            HashSet<ProductieRegel<char>> productieregels = new HashSet<ProductieRegel<char>>();
+            productieregels.Add(p2);
+            productieregels.Add(p1);
+            productieregels.Add(p5);
+            productieregels.Add(p3);
+            productieregels.Add(p4);
+            productieregels.Add(p6);
+            gr = new Grammatica<char>("A", productieregels);
+            return gr;
         }
 
         static public Automata<String> getExampleSlide8Lesson2()
