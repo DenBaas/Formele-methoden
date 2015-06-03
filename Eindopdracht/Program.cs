@@ -11,6 +11,7 @@ namespace Eindopdracht
         static void Main(string[] args)
         {
             var a =  getExampleSlide8Lesson2();
+
             Console.WriteLine("test");
         }
 

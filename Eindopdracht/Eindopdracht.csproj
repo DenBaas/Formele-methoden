@@ -42,11 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Automata.cs" />
-    <Compile Include="NFA\DFA\DFA.cs" />
-    <Compile Include="NFA\Toestand.cs" />
+    <Compile Include="NDFAandDFA\DFA.cs" />
+    <Compile Include="NDFAandDFA\Toestand.cs" />
     <Compile Include="ReguliereGrammatica\Grammatica.cs" />
-    <Compile Include="NFA\NDFA\NDFA.cs" />
-    <Compile Include="NFA\NFA.cs" />
+    <Compile Include="NDFAandDFA\NDFA.cs" />
     <Compile Include="ReguliereGrammatica\ProductieRegel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

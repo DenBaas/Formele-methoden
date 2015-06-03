@@ -10,10 +10,10 @@ namespace Eindopdracht.NFA
     {
         public string Name;
         public T Action;
-        public string VolgendeToestand;
+        public SortedSet<string> VolgendeToestand;
         public string VorigeToestand;
 
-        public Toestand(string name, T action, string volgendeToestand, string vorigeToestand)
+        public Toestand(string name, T action, SortedSet<string> volgendeToestand, string vorigeToestand)
         {
             Name = name;
             Action = action;
