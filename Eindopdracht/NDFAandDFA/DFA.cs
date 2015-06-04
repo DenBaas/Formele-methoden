@@ -10,6 +10,11 @@ namespace Eindopdracht.DFA
 {
     class DFA<T> : NDFA<T>
     {
+        public DFA()
+        {
+
+        }
+
         public NDFA<T> Reverse()
         {
             //List<Toestand<T>> newToestanden = new List<Toestand<T>>();

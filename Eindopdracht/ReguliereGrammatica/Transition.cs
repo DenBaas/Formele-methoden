@@ -37,27 +37,27 @@ namespace Eindopdracht
         }
             
         // overriding equals
-        //public bool equals ( Object other )
-        //{
-        //   if ( other == null )
-        //      {
-        //      return false;
-        //      }
-        //   else if ( other instanceof Transition )
-        //      {
-        //           return this.fromState.equals (((Transition )other ).fromState) && this.toState.equals (((Transition )other ).toState) && this.symbol == (((Transition )other ).symbol);
-        //      }
-        //   else return false;
-        //}
-    
-        //public int compareTo(Transition<T> t) 
-        //{
-        //    int fromCmp = fromState.compareTo(t.fromState);
-        //    int symbolCmp = new Character (symbol).compareTo(new Character (t.symbol));
-        //    int toCmp = toState.compareTo(t.toState);
-        
-        //    return (fromCmp != 0 ? fromCmp : (symbolCmp != 0 ? symbolCmp : toCmp));
-        //}
+        public bool equals ( Object other )
+        {
+           if ( other == null )
+              {
+              return false;
+              }
+           else if ( other.GetType() == typeof(Transition<T>))
+              {
+                   return this.fromState.Equals(((Transition<T> )other ).fromState) && this.toState.Equals (((Transition<T> )other ).toState) && this.symbol == (((Transition<T> )other ).symbol);
+              }
+           else return false;
+        }
+
+        /*public int compareTo(Transition<T> t)
+        {
+            int fromCmp = fromState.compareTo(t.fromState);
+            int symbolCmp = new Character(symbol).compareTo(new Character(t.symbol));
+            int toCmp = toState.compareTo(t.toState);
+
+            return (fromCmp != 0 ? fromCmp : (symbolCmp != 0 ? symbolCmp : toCmp));
+        }*/
 
         public T getFromState()
         {

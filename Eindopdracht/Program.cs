@@ -12,7 +12,11 @@ namespace Eindopdracht
         {
             var a =  getExampleSlide8Lesson2();
 
+            a.printTransitions();
+            Console.WriteLine(a.isDFA());
+
             Console.WriteLine("test");
+            Console.ReadLine();
         }
 
         static public Automata<String> getExampleSlide8Lesson2()

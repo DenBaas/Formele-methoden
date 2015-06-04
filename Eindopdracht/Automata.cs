@@ -76,24 +76,25 @@ namespace Eindopdracht
             }
         }
 
-        //public bool isDFA()
-        //{
-        //    bool isDFA = true;        
-        //    foreach (T from : states)
-        //    {
-        //        foreach (char symbol : symbols)
-        //        {
-        //            isDFA = isDFA && getToStates(from, symbol).size() == 1;
-        //        }
-        //    }
-        
-        //    return isDFA;
-        //}
+        public bool isDFA()
+        {
+            bool isDFA = true;        
+            foreach (T from in states)
+            {
+                foreach (char symbol in symbols)
+                {
+                    isDFA = isDFA && getToStates(from, symbol).Count() == 1;
+                }
+            }
+            return isDFA;
+        }
 
         public SortedSet<T> getToStates(T from, char symbol)
         {
-            // not yet correct:
+            // not yet correct: No shit!
             SortedSet<T> reachable = new SortedSet<T>();
+            
+            
 
             return reachable;
 
