@@ -1,4 +1,4 @@
-﻿using Eindopdracht.NDFA;
+﻿using Eindopdracht;
 using System;
 using System.Collections.Generic;
 using System.Linq;

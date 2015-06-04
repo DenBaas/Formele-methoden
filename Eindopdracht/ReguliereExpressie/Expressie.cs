@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Eindopdracht;
 
 namespace Eindopdracht.ReguliereExpressie
 {
-    public class Expressie: IComparable
+    public class Expressie//: IComparable
     {
         Operator op;
         String terminals;
@@ -123,6 +124,51 @@ namespace Eindopdracht.ReguliereExpressie
                     break;
             }
             return languageResult;
-        }   
+        }
+
+        //niet af
+        public Grammatica<Object> toReguliereGrammatica()
+        {
+            string startSymbool = String.Empty;
+            Expressie toStart = left;
+            while (String.IsNullOrEmpty(startSymbool))
+            {
+                if (left.left == null)
+                    startSymbool = terminals.Substring(0, 1);
+                else
+                    toStart = left.left;
+            }
+            HashSet<ProductieRegel<Object>> productionrules = new HashSet<ProductieRegel<Object>>();
+            Grammatica<Object> gram = new Grammatica<Object>(startSymbool, productionrules);
+
+            return gram;
+        }
+
+        public NDFAAndDFA.NDFA<object> ToNDFA()
+        {
+            return null;
+        }
+
+        internal string toString()
+        {
+            string expressie = "";
+            Expressie mostleft = left;
+            if (mostleft != null)
+            {
+                while (mostleft != null)
+                {
+                    mostleft = left.left;
+                }
+                while (mostleft.right != null)
+                {
+                    expressie += mostleft.terminals;
+                    mostleft = mostleft.right;
+                }
+            }
+            else {
+                expressie = terminals;
+            }
+            return expressie;
+        }
     }
 }

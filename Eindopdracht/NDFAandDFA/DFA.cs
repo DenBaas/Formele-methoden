@@ -1,14 +1,13 @@
-﻿using Eindopdracht.NDFA;
-using Eindopdracht.NFA;
+﻿using Eindopdracht;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Eindopdracht.DFA
+namespace Eindopdracht.NDFAAndDFA
 {
-    class DFA<T> : NDFA<T>
+    public class DFA<T> : NDFA<T>
     {
         public DFA()
         {
@@ -17,9 +16,22 @@ namespace Eindopdracht.DFA
 
         public NDFA<T> Reverse()
         {
-
-            return null;
+            NDFA<T> reversed = new NDFA<T>();
+            reversed.Invoersymbolen = Invoersymbolen;//hetzelfde
+            reversed.StartSymbolen = Eindtoestanden;
+            reversed.Eindtoestanden = StartSymbolen;
+            reversed.Toestanden = Toestanden;
+            foreach(Toestand<T> t in reversed.Toestanden)
+                t.Reverse();
+            return reversed ;
         }
+
+        //Minimalize
+        //ToReguliereGrammatica
+        //Equals
+        //And
+        //Or
+        //Not        
     }
 
 }

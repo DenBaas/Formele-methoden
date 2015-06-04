@@ -1,4 +1,5 @@
 ﻿using Eindopdracht.ReguliereExpressie;
+using Eindopdracht.NDFAAndDFA;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,17 +16,60 @@ namespace Eindopdracht
 
             a.printTransitions();
             Console.WriteLine(a.isDFA());
-
             var b = voorbeeldGrammatica();
             var c = voorbeeldExpressie();
+            var d = voorbeelDFA();
+            var e = voorbeeldNDFA();
+            Console.WriteLine("expressie");
+            Console.WriteLine(c.toString());
+            Console.WriteLine("grammatica");
             Console.WriteLine(b.toString());
-            Console.WriteLine("test");
+            Console.WriteLine("DFA");
+            Console.WriteLine(d.ToString());
+            Console.WriteLine("REVERSE DFA");
+            Console.WriteLine(d.Reverse().ToString());
+            Console.WriteLine("NDFA");
+            Console.WriteLine(e.ToString());
+            Console.WriteLine("NDFA -> DFA");
+            Console.WriteLine(e.ToDFA().ToString());
             Console.ReadLine();
+        }
+
+        static public NDFA<char> voorbeeldNDFA()
+        {
+            NDFA<char> ndfa = new NDFA<char>();
+            ndfa.Invoersymbolen = new HashSet<char>("ab".ToCharArray());
+            Toestand<char> t1 = new Toestand<char>("0", new Tuple<string, char>("1", 'a'), "0");
+            Toestand<char> t2 = new Toestand<char>("1", new Tuple<string, char>("0", 'b'), "1");
+            Toestand<char> t3 = new Toestand<char>("0", new Tuple<string, char>("0", 'b'), "0");
+            Toestand<char> t4 = new Toestand<char>("0", new Tuple<string, char>("0", 'a'), "0");
+            ndfa.Toestanden.Add(t1);
+            ndfa.Toestanden.Add(t2);
+            ndfa.Toestanden.Add(t3);
+            ndfa.Toestanden.Add(t4);
+            ndfa.StartSymbolen.Add("0");
+            ndfa.Eindtoestanden.Add("1");
+            return ndfa;
+        }
+
+        static public DFA<char> voorbeelDFA()
+        {
+            DFA<char> dfa = new DFA<char>();
+            dfa.Invoersymbolen = new HashSet<char>("ab".ToCharArray());
+            Toestand<char> t1 = new Toestand<char>("0",new Tuple<string,char>("1",'a'),"0");
+            Toestand<char> t2 = new Toestand<char>("1", new Tuple<string, char>("0", 'b'), "1");
+            Toestand<char> t3 = new Toestand<char>("0", new Tuple<string, char>("0", 'b'), "0");
+            dfa.Toestanden.Add(t1);
+            dfa.Toestanden.Add(t2);
+            dfa.Toestanden.Add(t3);
+            dfa.StartSymbolen.Add("0");
+            dfa.Eindtoestanden.Add("1");
+            return dfa;
         }
 
         static public Expressie voorbeeldExpressie()
         {
-            return new Expressie("a.b");
+            return new Expressie("a.b(ab)*");
         }
 
         static public Grammatica<char> voorbeeldGrammatica()
