@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Eindopdracht.ReguliereExpressie;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,8 +13,14 @@ namespace Eindopdracht
         {
             var a =  getExampleSlide8Lesson2();
             var b = voorbeeldGrammatica();
+            var c = voorbeeldExpressie();
             Console.WriteLine(b.toString());
             Console.WriteLine("test");
+        }
+
+        static public Expressie voorbeeldExpressie()
+        {
+            return new Expressie("a.b");
         }
 
         static public Grammatica<char> voorbeeldGrammatica()

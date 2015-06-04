@@ -43,12 +43,12 @@ namespace Eindopdracht
             return beschrijving;      
         }
 
-        public NDFA<T> TransformToNDFA()
-        {
-            NDFA<T> ndfa = null;
+        //public NDFA<T> TransformToNDFA()
+        //{
+        //    NDFA<T> ndfa = null;
             
-            return ndfa;
-        }
+        //    return ndfa;
+        //}
 
         public bool equals(Grammatica<T> other)
         {
