@@ -11,16 +11,13 @@ namespace Eindopdracht.NDFA
     {
         public SortedSet<T> Invoersymbolen = new SortedSet<T>();
         public SortedSet<Toestand<T>> Toestanden = new SortedSet<Toestand<T>>();
-        public SortedSet<string> StartSymbool;
+        public SortedSet<string> StartSymbolen = new SortedSet<string>();
         public SortedSet<string> Eindtoestanden = new SortedSet<string>();
 
         public NDFA()
         {
 
         }
-        public NDFA(List<Toestand<T>> toestanden, SortedSet<T> invoerSymbolen, SortedSet<string> startSymbool, SortedSet<string> eindtoestanden)
-        {
-
-        }
+        
     }   
 }

@@ -8,15 +8,15 @@ namespace Eindopdracht
 {
     public class ProductieRegel<T>
     {
-        public T linkerkant;
-        public char x;
-        public T rechterkant;
+        public string linkerkant;
+        public T x;
+        public string rechterkant;
 
-        public ProductieRegel(T l, char x, T r)
+        public ProductieRegel(string start, T x, string eind)
         {
-            this.linkerkant = l;
+            this.linkerkant = start;
             this.x = x;
-            this.rechterkant = r;
+            this.rechterkant = eind;
         }
 
         public String toString()
