@@ -21,17 +21,24 @@ namespace Eindopdracht
             var d = voorbeelDFA();
             var e = voorbeeldNDFA();
             Console.WriteLine("expressie");
-            Console.WriteLine(c.toString());
+            Console.WriteLine(c.ToString());
+
             Console.WriteLine("grammatica");
-            Console.WriteLine(b.toString());
+            Console.WriteLine(b.ToString());
+            Console.WriteLine("grammatica -> NDFA");
+            Console.WriteLine(b.TransformToNDFA().ToString());
+
             Console.WriteLine("DFA");
             Console.WriteLine(d.ToString());
             Console.WriteLine("REVERSE DFA");
             Console.WriteLine(d.Reverse().ToString());
+
             Console.WriteLine("NDFA");
             Console.WriteLine(e.ToString());
             Console.WriteLine("NDFA -> DFA");
             Console.WriteLine(e.ToDFA().ToString());
+            Console.WriteLine("NDFA -> Reguliere Grammatica");
+            Console.WriteLine(e.ToReguliereGrammatica().ToString());
             Console.ReadLine();
         }
 
@@ -39,10 +46,10 @@ namespace Eindopdracht
         {
             NDFA<char> ndfa = new NDFA<char>();
             ndfa.Invoersymbolen = new HashSet<char>("ab".ToCharArray());
-            Toestand<char> t1 = new Toestand<char>("0", new Tuple<string, char>("1", 'a'), "0");
-            Toestand<char> t2 = new Toestand<char>("1", new Tuple<string, char>("0", 'b'), "1");
-            Toestand<char> t3 = new Toestand<char>("0", new Tuple<string, char>("0", 'b'), "0");
-            Toestand<char> t4 = new Toestand<char>("0", new Tuple<string, char>("0", 'a'), "0");
+            Toestand<char> t1 = new Toestand<char>("0", new Tuple<string, char>("1", 'a'));
+            Toestand<char> t2 = new Toestand<char>("1", new Tuple<string, char>("0", 'b'));
+            Toestand<char> t3 = new Toestand<char>("0", new Tuple<string, char>("0", 'b'));
+            Toestand<char> t4 = new Toestand<char>("0", new Tuple<string, char>("0", 'a'));
             ndfa.Toestanden.Add(t1);
             ndfa.Toestanden.Add(t2);
             ndfa.Toestanden.Add(t3);
@@ -56,12 +63,14 @@ namespace Eindopdracht
         {
             DFA<char> dfa = new DFA<char>();
             dfa.Invoersymbolen = new HashSet<char>("ab".ToCharArray());
-            Toestand<char> t1 = new Toestand<char>("0",new Tuple<string,char>("1",'a'),"0");
-            Toestand<char> t2 = new Toestand<char>("1", new Tuple<string, char>("0", 'b'), "1");
-            Toestand<char> t3 = new Toestand<char>("0", new Tuple<string, char>("0", 'b'), "0");
+            Toestand<char> t1 = new Toestand<char>("0",new Tuple<string,char>("1",'a'));
+            Toestand<char> t2 = new Toestand<char>("1", new Tuple<string, char>("0", 'b'));
+            Toestand<char> t3 = new Toestand<char>("0", new Tuple<string, char>("0", 'b'));
+            Toestand<char> t4 = new Toestand<char>("1", new Tuple<string, char>("1", 'a'));
             dfa.Toestanden.Add(t1);
             dfa.Toestanden.Add(t2);
             dfa.Toestanden.Add(t3);
+            dfa.Toestanden.Add(t4);
             dfa.StartSymbolen.Add("0");
             dfa.Eindtoestanden.Add("1");
             return dfa;
@@ -81,6 +90,7 @@ namespace Eindopdracht
             ProductieRegel<char> p4 = new ProductieRegel<char>("B", 'b', "A");
             ProductieRegel<char> p5 = new ProductieRegel<char>("A", '$', "C");
             ProductieRegel<char> p6 = new ProductieRegel<char>("C", 'a', "B");
+            ProductieRegel<char> p7 = new ProductieRegel<char>("C", 'b', "A");
             HashSet<ProductieRegel<char>> productieregels = new HashSet<ProductieRegel<char>>();
             productieregels.Add(p2);
             productieregels.Add(p1);
@@ -88,6 +98,7 @@ namespace Eindopdracht
             productieregels.Add(p3);
             productieregels.Add(p4);
             productieregels.Add(p6);
+            productieregels.Add(p7);
             gr = new Grammatica<char>("A", productieregels);
             return gr;
         }
@@ -122,7 +133,6 @@ namespace Eindopdracht
 
             return m;
         }
-
 
         static public Automata<String> getExampleSlide14Lesson2()
         {

@@ -127,7 +127,7 @@ namespace Eindopdracht.ReguliereExpressie
         }
 
         //niet af
-        public Grammatica<Object> toReguliereGrammatica()
+        public Grammatica<Object> ToReguliereGrammatica()
         {
             string startSymbool = String.Empty;
             Expressie toStart = left;
@@ -149,7 +149,7 @@ namespace Eindopdracht.ReguliereExpressie
             return null;
         }
 
-        internal string toString()
+        internal string ToString()
         {
             string expressie = "";
             Expressie mostleft = left;

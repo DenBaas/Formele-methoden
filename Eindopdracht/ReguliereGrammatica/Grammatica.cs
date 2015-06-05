@@ -1,4 +1,5 @@
 ﻿using Eindopdracht;
+using Eindopdracht.NDFAAndDFA;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace Eindopdracht
 {
     public class Grammatica<T>
     {
-        private Dictionary<string, HashSet<ProductieRegel<T>>> sortedRules = new Dictionary<string, HashSet<ProductieRegel<T>>>();
+        public Dictionary<string, HashSet<ProductieRegel<T>>> sortedRules = new Dictionary<string, HashSet<ProductieRegel<T>>>();
         private string startSymbool;
         public HashSet<T> alfabet = new HashSet<T>();
 
@@ -30,7 +31,7 @@ namespace Eindopdracht
             }
         }
 
-        public String toString()
+        public String ToString()
         {
             String beschrijving = "";
             foreach (KeyValuePair<string, HashSet<ProductieRegel<T>>> pair in sortedRules)
@@ -43,12 +44,20 @@ namespace Eindopdracht
             return beschrijving;      
         }
 
-        //public NDFA<T> TransformToNDFA()
-        //{
-        //    NDFA<T> ndfa = null;
-            
-        //    return ndfa;
-        //}
+        public NDFA<T> TransformToNDFA()
+        {
+            NDFA<T> ndfa = new NDFA<T>();
+            ndfa.Invoersymbolen = alfabet;
+            foreach (KeyValuePair<string, HashSet<ProductieRegel<T>>> toestandEnOvergangen in sortedRules)
+            {
+                foreach (ProductieRegel<T> t in toestandEnOvergangen.Value)
+                {                    
+                    Toestand<T> toestand = new Toestand<T>(toestandEnOvergangen.Key,new Tuple<string,T>(t.rechterkant,t.x));
+                    ndfa.Toestanden.Add(toestand);
+                }
+            }
+            return ndfa;
+        }
 
         public bool equals(Grammatica<T> other)
         {

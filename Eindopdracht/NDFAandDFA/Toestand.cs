@@ -12,11 +12,11 @@ namespace Eindopdracht.NDFAAndDFA
         public Tuple<string, T> VolgendeToestand;//naam volgende toestand met actie
         public string VorigeToestand;
 
-        public Toestand(string name, Tuple<string, T> volgendeToestand, string vorigeToestand)
+        public Toestand(string name, Tuple<string, T> volgendeToestand)
         {
             Name = name;
             VolgendeToestand = volgendeToestand;
-            VorigeToestand = vorigeToestand;
+            VorigeToestand = name;
         }
 
         public void Reverse()
@@ -24,11 +24,12 @@ namespace Eindopdracht.NDFAAndDFA
             string tempVorigeToestand = VorigeToestand;
             VorigeToestand = VolgendeToestand.Item1;
             VolgendeToestand = new Tuple<string,T>(tempVorigeToestand,VolgendeToestand.Item2);
+            Name = VorigeToestand;
         }
 
         public override string ToString()
         {
-            return "Toestand: " + Name + " volgende toestand: " + VolgendeToestand.Item1 + " " + VolgendeToestand.Item2.ToString() + " vorige toestand: " + VorigeToestand; 
+            return "Toestand: " + Name + " volgende toestand: " + VolgendeToestand.Item1 + " met " + VolgendeToestand.Item2.ToString(); 
         }
     }
 }

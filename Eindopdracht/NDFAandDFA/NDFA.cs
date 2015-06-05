@@ -21,7 +21,13 @@ namespace Eindopdracht.NDFAAndDFA
 
         public override string ToString()
         {
-            string result = "";
+            string result = "Start: ";
+            foreach (string s1 in StartSymbolen)
+                result += s1 + "\t";
+            result += "\nEinde: ";
+            foreach (string s2 in Eindtoestanden)
+                result += s2 + "\t";
+            result += "\n";
             foreach (Toestand<T> t in Toestanden)
             {
                 result += t.ToString() + "\n";
@@ -32,13 +38,49 @@ namespace Eindopdracht.NDFAAndDFA
         public DFA<T> ToDFA()
         {
             DFA<T> newDFA = new DFA<T>();
-            HashSet<Toestand<T>> table = new HashSet<Toestand<T>>();
-            //per toestand kijk je per invoersymbool waar je heen kan
-            //het resultaat daarvan is de naam van de nieuwe toestand
+            //sorteer alle toestanden op toestand
+            Dictionary<string, HashSet<Toestand<T>>> sortedToestanden = new Dictionary<string, HashSet<Toestand<T>>>();
+            foreach(Toestand<T> t in Toestanden)
+            {
+                if (!sortedToestanden.ContainsKey(t.Name))
+                {
+                    sortedToestanden.Add(t.Name, new HashSet<Toestand<T>>());
+                }
+                sortedToestanden[t.Name].Add(t);
+            }
+            //string = naam van de (nieuwe) toestand 
+            //Dictionary bevat per invoersymbool een tuple met de bijbehorende toestanden waar het heen kan
+            HashSet<Tuple<string, Dictionary<T, HashSet<string>>>> tabelVanAlles = new HashSet<Tuple<string, Dictionary<T, HashSet<string>>>>();
+            Dictionary<T, HashSet<string>> d;
+            foreach(string s in StartSymbolen)
+            {
+                d = new Dictionary<T, HashSet<string>>();
+                foreach (T invoer in Invoersymbolen)
+                    d.Add(invoer, new HashSet<string>());
+                foreach (Toestand<T> t in Toestanden)
+                {
+                    if (t.Name == s)
+                    {
+                        d[t.VolgendeToestand.Item2].Add(t.VolgendeToestand.Item1);
+                    }
+                }
+                tabelVanAlles.Add(new Tuple<string,Dictionary<T, HashSet<string>>>(s,d));
+            }
 
-            //op het eind zet je alle toestanden waar een eindtoestand in zit bij de eindtoestanden
             
             return newDFA;
+        }
+
+        public Grammatica<T> ToReguliereGrammatica()
+        {
+            Grammatica<T> gr = new Grammatica<T>(StartSymbolen.ElementAt(0), new HashSet<ProductieRegel<T>>());
+            foreach (Toestand<T> t in Toestanden)
+            {
+                if (!gr.sortedRules.ContainsKey(t.Name))
+                    gr.sortedRules.Add(t.Name, new HashSet<ProductieRegel<T>>());
+                gr.sortedRules[t.Name].Add(new ProductieRegel<T>(t.Name, t.VolgendeToestand.Item2,t.VolgendeToestand.Item1));
+            }
+            return gr;
         }
     }   
 }
