@@ -31,6 +31,20 @@ namespace Eindopdracht
             }
         }
 
+        public bool Equals(Grammatica<T> other)
+        {
+            if(other == null)
+            {
+                return false;
+            }
+            else if(this.ToString() == other.ToString() && this.startSymbool == other.startSymbool && this.sortedRules == other.sortedRules && this.alfabet == other.alfabet)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
+
         public String ToString()
         {
             String beschrijving = "";

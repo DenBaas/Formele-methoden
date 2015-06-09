@@ -44,6 +44,34 @@ namespace Eindopdracht.NDFAAndDFA
             return reversed ;
         }
 
+        public bool Equals(DFA<T> other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+            else if (this.Eindtoestanden == other.Eindtoestanden && this.Invoersymbolen == other.Invoersymbolen && this.StartSymbolen == other.StartSymbolen && this.Toestanden == other.Toestanden)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
+
+        /*public bool equals(Object other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+            else if (other.GetType() == typeof(Transition<T>))
+            {
+                return this.fromState.Equals(((Transition<T>)other).fromState) && this.toState.Equals(((Transition<T>)other).toState) && this.symbol == (((Transition<T>)other).symbol);
+            }
+            else return false;
+        }*/
+
+        //Minimalize
         public DFA<T> Minimalize()
         {
             DFA<T> dfa = new DFA<T>();

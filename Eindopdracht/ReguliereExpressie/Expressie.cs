@@ -17,7 +17,16 @@ namespace Eindopdracht.ReguliereExpressie
         public enum Operator { PLUS, STAR, OR, DOT, ONE}    
         Expressie left;
         Expressie right;
-       
+        //Comparer<String> compareByLength = new Comparer<String> ()
+        //    {
+        //        public int compare(String s1, String s2)
+        //        {
+        //        if (s1.Length == s2.Length)
+        //            {return s1.CompareTo(s2);}
+        //        else
+        //            {return s1.Length - s2.Length;}
+        //        }
+        //    };
         public Expressie()
         {
             op = Operator.ONE;
@@ -123,6 +132,20 @@ namespace Eindopdracht.ReguliereExpressie
             Toestand<object> eind = new Toestand<object>("F", new Tuple<string, object>("", '$'));
             
             return ndfa;
+        }
+
+        public bool Equals(Expressie other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+            else if (this.ToString() == other.ToString() && this.terminals == other.terminals && this.op == other.op && this.left == other.left && this.right == other.right)
+            {
+                return true;
+            }
+            else
+                return false;
         }
 
         public string ToString()

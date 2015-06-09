@@ -14,6 +14,20 @@ namespace Eindopdracht.NDFAAndDFA
         public HashSet<Toestand<T>> Toestanden = new HashSet<Toestand<T>>();
         public HashSet<string> StartSymbolen = new HashSet<string>();
         public HashSet<string> Eindtoestanden = new HashSet<string>();
+        
+        public bool Equals(NDFA<T> other)
+        {
+            if(other == null)
+            {
+                return false;
+            }
+            else if(this.Invoersymbolen == other.Invoersymbolen && this.Toestanden == other.Toestanden && this.StartSymbolen == other.StartSymbolen && this.Eindtoestanden == other.Eindtoestanden)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
 
         public NDFA()
         {

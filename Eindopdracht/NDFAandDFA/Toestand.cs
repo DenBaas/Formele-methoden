@@ -31,5 +31,15 @@ namespace Eindopdracht.NDFAAndDFA
         {
             return "Van " + Name + " naar: " + VolgendeToestand.Item1 + " met " + VolgendeToestand.Item2.ToString();
         }
+
+        public bool Equals(Toestand<T> other)
+        {
+            if(this.Name == other.Name && this.VolgendeToestand == other.VolgendeToestand)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
     }
 }
