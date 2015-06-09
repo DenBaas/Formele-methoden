@@ -94,6 +94,15 @@ namespace Eindopdracht.NDFAAndDFA
                     newt.VolgendeToestand = new Tuple<string, T>(newt.VolgendeToestand.Item1 + p, newt.VolgendeToestand.Item2);
                 newDFA.Toestanden.Add(newt);
             }
+            //overbodige toestanden weghalen
+            for(int v = newDFA.Toestanden.Count-1; v >= 0; v--)//ar h in newDFA.Toestanden)
+            {
+                var t = newDFA.Toestanden.FirstOrDefault(f => f.VolgendeToestand.Item1 == newDFA.Toestanden.ElementAt(v).Name);
+                if (t == default(Toestand<T>))
+                {
+                    newDFA.Toestanden.Remove(newDFA.Toestanden.ElementAt(v));    
+                }
+            }
             //eindtoestanden bepalen
             foreach (var g in newDFA.Toestanden)
             {

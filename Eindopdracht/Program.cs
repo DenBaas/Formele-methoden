@@ -82,12 +82,14 @@ namespace Eindopdracht
             Toestand<char> t4 = new Toestand<char>("1", new Tuple<string, char>("1", 'a'));
             Toestand<char> t5 = new Toestand<char>("2", new Tuple<string, char>("2", 'a'));
             Toestand<char> t6 = new Toestand<char>("2", new Tuple<string, char>("2", 'b'));
+            Toestand<char> t7 = new Toestand<char>("3", new Tuple<string, char>("3", 'b'));
             dfa.Toestanden.Add(t1);
             dfa.Toestanden.Add(t2);
             dfa.Toestanden.Add(t3);
             dfa.Toestanden.Add(t4);
             dfa.Toestanden.Add(t5);
             dfa.Toestanden.Add(t6);
+            dfa.Toestanden.Add(t7);
             dfa.StartSymbolen.Add("0");
             dfa.Eindtoestanden.Add("1");
             return dfa;
