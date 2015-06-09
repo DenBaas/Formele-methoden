@@ -47,7 +47,7 @@ namespace Eindopdracht.NDFAAndDFA
         public DFA<T> Minimalize()
         {
             DFA<T> dfa = new DFA<T>();
-
+            var a = CreateTable();
             return dfa;
         }
         //ToReguliereGrammatica
