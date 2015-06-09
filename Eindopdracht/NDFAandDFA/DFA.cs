@@ -14,6 +14,24 @@ namespace Eindopdracht.NDFAAndDFA
 
         }
 
+
+
+        public DFA<T> Ontkenning()
+        {
+            DFA<T> dfa = new DFA<T>();
+            dfa.Invoersymbolen = Invoersymbolen;
+            HashSet<string> eind = new HashSet<string>();
+            foreach(Toestand<T> t in Toestanden){
+                if(!Eindtoestanden.Contains(t.Name)){
+                    eind.Add(t.Name);
+                }
+            }
+            dfa.Eindtoestanden = eind;
+            dfa.Toestanden = Toestanden;
+            dfa.StartSymbolen = StartSymbolen;
+            return dfa;
+        }
+
         public NDFA<T> Reverse()
         {
             NDFA<T> reversed = new NDFA<T>();
@@ -26,7 +44,12 @@ namespace Eindopdracht.NDFAAndDFA
             return reversed ;
         }
 
-        //Minimalize
+        public DFA<T> Minimalize()
+        {
+            DFA<T> dfa = new DFA<T>();
+
+            return dfa;
+        }
         //ToReguliereGrammatica
         //Equals
         //And

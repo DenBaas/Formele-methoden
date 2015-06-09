@@ -29,7 +29,7 @@ namespace Eindopdracht.NDFAAndDFA
 
         public override string ToString()
         {
-            return "Toestand: " + Name + " volgende toestand: " + VolgendeToestand.Item1 + " met " + VolgendeToestand.Item2.ToString(); 
+            return "Van " + Name + " naar: " + VolgendeToestand.Item1 + " met " + VolgendeToestand.Item2.ToString();
         }
     }
 }

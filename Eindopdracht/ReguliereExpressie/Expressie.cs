@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Eindopdracht;
+using Eindopdracht.NDFAAndDFA;
 
 namespace Eindopdracht.ReguliereExpressie
 {
@@ -13,20 +14,9 @@ namespace Eindopdracht.ReguliereExpressie
         String terminals;
         // De mogelijke operatoren voor een reguliere expressie (+, *, |, .) 
         // Daarnaast ook een operator definitie voor 1 keer repeteren (default)
-        public enum Operator { PLUS, STAR, OR, DOT, ONE}
-    
+        public enum Operator { PLUS, STAR, OR, DOT, ONE}    
         Expressie left;
         Expressie right;
-        //Comparer<String> compareByLength = new Comparer<String> ()
-        //    {
-        //        public int compare(String s1, String s2)
-        //        {
-        //        if (s1.Length == s2.Length)
-        //            {return s1.CompareTo(s2);}
-        //        else
-        //            {return s1.Length - s2.Length;}
-        //        }
-        //    };
        
         public Expressie()
         {
@@ -78,7 +68,7 @@ namespace Eindopdracht.ReguliereExpressie
             return result;
         }
 
-        public HashSet <String>  GetLanguage(int maxSteps)
+        public HashSet<String> GetLanguage(int maxSteps)
         {
             HashSet<String> emptyLanguage = new HashSet<String>();
             HashSet<String> languageResult = new HashSet<String>();        
@@ -125,31 +115,17 @@ namespace Eindopdracht.ReguliereExpressie
             }
             return languageResult;
         }
-
-        //niet af
-        public Grammatica<Object> ToReguliereGrammatica()
+        
+        public NDFA<object> ToNDFA()
         {
-            string startSymbool = String.Empty;
-            Expressie toStart = left;
-            while (String.IsNullOrEmpty(startSymbool))
-            {
-                if (left.left == null)
-                    startSymbool = terminals.Substring(0, 1);
-                else
-                    toStart = left.left;
-            }
-            HashSet<ProductieRegel<Object>> productionrules = new HashSet<ProductieRegel<Object>>();
-            Grammatica<Object> gram = new Grammatica<Object>(startSymbool, productionrules);
-
-            return gram;
+            NDFA<object> ndfa = new NDFA<object>();
+            Toestand<object> begin = new Toestand<object>("S", new Tuple<string, object>("F", '$'));
+            Toestand<object> eind = new Toestand<object>("F", new Tuple<string, object>("", '$'));
+            
+            return ndfa;
         }
 
-        public NDFAAndDFA.NDFA<object> ToNDFA()
-        {
-            return null;
-        }
-
-        internal string ToString()
+        public string ToString()
         {
             string expressie = "";
             Expressie mostleft = left;
