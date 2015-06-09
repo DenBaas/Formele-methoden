@@ -27,6 +27,20 @@ namespace Eindopdracht.ReguliereExpressie
         //            {return s1.Length - s2.Length;}
         //        }
         //    };
+
+        public bool Equals(Expressie other)
+        {
+            if(other == null)
+            {
+                return false;
+            }
+            else if(this.ToString() == other.ToString() && this.terminals == other.terminals && this.op == other.op && this.left == other.left && this.right == other.right)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
        
         public Expressie()
         {

@@ -39,6 +39,7 @@ namespace Eindopdracht
             Console.WriteLine(e.ToDFA().ToString());
             Console.WriteLine("NDFA -> Reguliere Grammatica");
             Console.WriteLine(e.ToReguliereGrammatica().ToString());
+            e.NDFAtoDFA();
             Console.ReadLine();
         }
 

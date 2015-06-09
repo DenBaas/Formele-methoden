@@ -14,6 +14,48 @@ namespace Eindopdracht.NDFAAndDFA
         public HashSet<string> StartSymbolen = new HashSet<string>();
         public HashSet<string> Eindtoestanden = new HashSet<string>();
 
+        public void NDFAtoDFA()
+        {
+            List<string> symbolen = new List<string>();
+            Dictionary<string, Tuple<string, T>> table = new Dictionary<string, Tuple<string, T>>();
+            foreach(Toestand<T> t in Toestanden)
+            {
+                if(!symbolen.Contains(t.Name))
+                {
+                    symbolen.Add(t.Name);
+                }
+            }
+            foreach (string s in symbolen)
+            {
+                Console.WriteLine("The variable in symbolen is: " + s);
+            }
+            foreach(Toestand<T> t in Toestanden)
+            {
+                if(symbolen.Contains(t.Name))
+                {
+                    table.Add(t.Name, t.VolgendeToestand);
+                }
+            }
+            for (int i = 0; i < table.Count; i++)
+            {
+                
+            }
+        }
+        
+        public bool Equals(NDFA<T> other)
+        {
+            if(other == null)
+            {
+                return false;
+            }
+            else if(this.Invoersymbolen == other.Invoersymbolen && this.Toestanden == other.Toestanden && this.StartSymbolen == other.StartSymbolen && this.Eindtoestanden == other.Eindtoestanden)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
+
         public NDFA()
         {
 
@@ -46,7 +88,8 @@ namespace Eindopdracht.NDFAAndDFA
                 {
                     sortedToestanden.Add(t.Name, new HashSet<Toestand<T>>());
                 }
-                sortedToestanden[t.Name].Add(t);
+                else
+                    sortedToestanden[t.Name].Add(t);
             }
             //string = naam van de (nieuwe) toestand 
             //Dictionary bevat per invoersymbool een tuple met de bijbehorende toestanden waar het heen kan
@@ -66,8 +109,6 @@ namespace Eindopdracht.NDFAAndDFA
                 }
                 tabelVanAlles.Add(new Tuple<string,Dictionary<T, HashSet<string>>>(s,d));
             }
-
-            
             return newDFA;
         }
 
