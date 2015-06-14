@@ -36,8 +36,7 @@ namespace Eindopdracht
             Console.WriteLine(d.ToString());
             Console.WriteLine("REVERSE DFA");
             Console.WriteLine(d.Reverse().ToString());
-            Console.WriteLine("Minimaliseren");
-            Console.WriteLine(d.Minimalize().ToString());
+            
             Console.WriteLine("Ontkenning");
             Console.WriteLine(d.Ontkenning().ToString());
 
@@ -47,6 +46,9 @@ namespace Eindopdracht
             Console.WriteLine(e.ToDFA().ToString());
             Console.WriteLine("NDFA -> Reguliere Grammatica");
             Console.WriteLine(e.ToReguliereGrammatica().ToString());
+
+            Console.WriteLine("Minimaliseren DFA");
+            Console.WriteLine(minimaliserenDFA().ToString());
             Console.ReadLine();
         }
 
@@ -72,6 +74,24 @@ namespace Eindopdracht
             ndfa.StartSymbolen.Add("0");
             ndfa.Eindtoestanden.Add("1");
             return ndfa;
+        }
+
+        static public DFA<char> minimaliserenDFA()
+        {
+            //les 6 dia 14
+            DFA<char> dfa = new DFA<char>();
+            dfa.Invoersymbolen = new HashSet<char>("ab".ToCharArray());
+            dfa.Toestanden.Add(new Toestand<char>("0", new Tuple<string, char>("1", 'a')));
+            dfa.Toestanden.Add(new Toestand<char>("0", new Tuple<string, char>("2", 'b')));
+            dfa.Toestanden.Add(new Toestand<char>("1", new Tuple<string, char>("0", 'b')));
+            dfa.Toestanden.Add(new Toestand<char>("1", new Tuple<string, char>("2", 'a')));
+            dfa.Toestanden.Add(new Toestand<char>("2", new Tuple<string, char>("2", 'a')));
+            dfa.Toestanden.Add(new Toestand<char>("2", new Tuple<string, char>("2", 'b')));
+            dfa.Toestanden.Add(new Toestand<char>("3", new Tuple<string, char>("1", 'a')));
+            dfa.Toestanden.Add(new Toestand<char>("3", new Tuple<string, char>("2", 'b')));  
+            dfa.StartSymbolen.Add("0");
+            dfa.Eindtoestanden.Add("2");
+            return dfa.Minimalize();
         }
 
         static public DFA<char> voorbeelDFA()
@@ -127,28 +147,28 @@ namespace Eindopdracht
             char[] alphabet = { 'a', 'b' };
             Automata<String> m = new Automata<String>(alphabet);
 
-            m.addTransition(new Transition<String>("q0", 'a', "q1"));
-            m.addTransition(new Transition<String>("q0", 'b', "q4"));
+            m.addTransition(new Transition<String>("0", 'a', "1"));
+            m.addTransition(new Transition<String>("0", 'b', "4"));
 
-            m.addTransition(new Transition<String>("q1", 'a', "q4"));
-            m.addTransition(new Transition<String>("q1", 'b', "q2"));
+            m.addTransition(new Transition<String>("1", 'a', "4"));
+            m.addTransition(new Transition<String>("1", 'b', "2"));
 
-            m.addTransition(new Transition<String>("q2", 'a', "q3"));
-            m.addTransition(new Transition<String>("q2", 'b', "q4"));
+            m.addTransition(new Transition<String>("2", 'a', "3"));
+            m.addTransition(new Transition<String>("2", 'b', "4"));
 
-            m.addTransition(new Transition<String>("q3", 'a', "q1"));
-            m.addTransition(new Transition<String>("q3", 'b', "q2"));
+            m.addTransition(new Transition<String>("3", 'a', "1"));
+            m.addTransition(new Transition<String>("3", 'b', "2"));
 
             // the error state, loops for a and b:
-            m.addTransition(new Transition<String>("q4", 'a'));
-            m.addTransition(new Transition<String>("q4", 'b'));
+            m.addTransition(new Transition<String>("4", 'a'));
+            m.addTransition(new Transition<String>("4", 'b'));
 
             // only on start state in a dfa:
-            m.defineAsStartState("q0");
+            m.defineAsStartState("0");
 
             // two final states:
-            m.defineAsFinalState("q2");
-            m.defineAsFinalState("q3");
+            m.defineAsFinalState("2");
+            m.defineAsFinalState("3");
 
             return m;
         }

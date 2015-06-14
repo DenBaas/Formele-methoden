@@ -61,24 +61,29 @@ namespace Eindopdracht.NDFAAndDFA
         public DFA<T> ToDFA()
         {
             DFA<T> newDFA = new DFA<T>();
-            foreach (KeyValuePair<Tuple<string, T>, SortedSet<string>> k in CreateTable())
+            Dictionary<Tuple<string, T>, SortedSet<string>> table = CreateTable();
+            foreach (KeyValuePair<Tuple<string, T>, SortedSet<string>> k in table)
             {
                 Toestand<T> newt = new Toestand<T>(k.Key.Item1, new Tuple<string, T>("", k.Key.Item2));
                 foreach (string p in k.Value)
-                    newt.VolgendeToestand = new Tuple<string, T>(newt.VolgendeToestand.Item1 + p, newt.VolgendeToestand.Item2);
+                {
+                    string naam = "";
+                    SortedSet<char> d = new SortedSet<char>((newt.VolgendeToestand.Item1 + p).ToCharArray());
+                    foreach (char y in d)
+                        naam += y;
+                    newt.VolgendeToestand = new Tuple<string, T>(naam, newt.VolgendeToestand.Item2);
+                }
                 newDFA.Toestanden.Add(newt);
             }
             //overbodige toestanden weghalen
-            for(int v = newDFA.Toestanden.Count-1; v >= 0; v--)//ar h in newDFA.Toestanden)
+            for(int v = newDFA.Toestanden.Count-1; v >= 0; v--)
             {
                 var x = StartSymbolen.FirstOrDefault(p => p == newDFA.Toestanden.ElementAt(v).Name);
                 if (x == null)
                 {
                     var t = newDFA.Toestanden.FirstOrDefault(f => f.VolgendeToestand.Item1 == newDFA.Toestanden.ElementAt(v).Name && f.Name != newDFA.Toestanden.ElementAt(v).Name);
                     if (t == default(Toestand<T>))
-                    {
                         newDFA.Toestanden.Remove(newDFA.Toestanden.ElementAt(v));
-                    }
                 }
             }
             //eindtoestanden bepalen
@@ -87,27 +92,30 @@ namespace Eindopdracht.NDFAAndDFA
                 foreach (char c in g.Name.ToCharArray())
                 {
                     if (Eindtoestanden.Contains(new string(c,1)))
-                    {
                         newDFA.Eindtoestanden.Add(g.Name);
-                    }
                 }
             }
             //begintoestanden bepalen
             newDFA.StartSymbolen = StartSymbolen;
+            newDFA.Invoersymbolen = Invoersymbolen;
             return newDFA;
         }
 
+        /*
+         * returns: per naam van de toestand met actie een set met namen van toestanden waar je heen kan
+         */
         public Dictionary<Tuple<string, T>, SortedSet<string>> CreateTable()
         {
             Dictionary<Tuple<string, T>, SortedSet<string>> toestandenEnWaarJeHeenKan = new Dictionary<Tuple<string, T>, SortedSet<string>>();
-            //maak een lege tabel van waar je allemaal heen kan
-            foreach (String s in GetToestanden())
+            //maak een lege tabel met toestanden in de rijen in acties in de rijen
+            foreach (var s in Toestanden.Where(r => StartSymbolen.Contains(r.Name)))
             {
                 foreach (T t in Invoersymbolen)
-                    toestandenEnWaarJeHeenKan.Add(new Tuple<string, T>(s, t), new SortedSet<string>());
+                    if (!toestandenEnWaarJeHeenKan.ContainsKey(new Tuple<string,T>(s.Name, t)))
+                        toestandenEnWaarJeHeenKan.Add(new Tuple<string, T>(s.Name, t), new SortedSet<string>());
             }
-            //vul de tabel
-            foreach (Toestand<T> t in Toestanden)
+            //vul de tabel EN START VANUIT DE BEGINTOESTANDEN
+            foreach (Toestand<T> t in Toestanden.Where(r=> StartSymbolen.Contains(r.Name)))
             {
                 var a = new Tuple<string, T>(t.Name, t.VolgendeToestand.Item2);
                 toestandenEnWaarJeHeenKan[a].Add(t.VolgendeToestand.Item1);
@@ -115,24 +123,22 @@ namespace Eindopdracht.NDFAAndDFA
             //vul de tabel aan met nieuwe waardes!
             for (int i = 0; i < toestandenEnWaarJeHeenKan.Count; i++)
             {
-                string newState = "";
-                foreach (string s1 in toestandenEnWaarJeHeenKan.ElementAt(i).Value)
-                    newState += s1;
-                foreach (T t in Invoersymbolen)
+                Tuple<string, T> input = toestandenEnWaarJeHeenKan.Keys.ElementAt(i);
+                foreach (char state in input.Item1.ToCharArray())
                 {
-                    var r = new Tuple<string, T>(newState, t);
-                    if (!toestandenEnWaarJeHeenKan.ContainsKey(r))
-                    {
-                        //toevoegen
-                        toestandenEnWaarJeHeenKan.Add(r, new SortedSet<string>());
-                        i = 0;
-                    }
-                    foreach (var v in toestandenEnWaarJeHeenKan.Where(o => toestandenEnWaarJeHeenKan.ElementAt(i).Value.Contains(o.Key.Item1) && o.Key.Item2.Equals(t)))
-                    {
-                        if (r.Item1 != "")
-                            toestandenEnWaarJeHeenKan[r].UnionWith(v.Value);
-                    }
+                    var v = new HashSet<Toestand<T>>();
+                    v.UnionWith(Toestanden.Where(v1 => v1.Name == state.ToString() && v1.VolgendeToestand.Item2.Equals(input.Item2)));
+                    var v3 = v.Where(t1 => t1.VolgendeToestand.Item2.Equals(input.Item2));
+                    foreach (Toestand<T> t2 in v3)
+                        toestandenEnWaarJeHeenKan[input].Add(t2.VolgendeToestand.Item1);
                 }
+                //zonodig nieuwe toestandtoevoegen
+                string newstate = "";
+                foreach (var c in toestandenEnWaarJeHeenKan[input])
+                    newstate += c;
+                if (!toestandenEnWaarJeHeenKan.ContainsKey(new Tuple<string, T>(newstate, input.Item2)))
+                    foreach(T t in Invoersymbolen)
+                        toestandenEnWaarJeHeenKan.Add(new Tuple<string, T>(newstate ,t), new SortedSet<string>());
             }
             return toestandenEnWaarJeHeenKan;
         }
