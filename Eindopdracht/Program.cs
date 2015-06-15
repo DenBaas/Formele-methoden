@@ -20,32 +20,32 @@ namespace Eindopdracht
             var c = voorbeeldExpressie();
             var d = voorbeelDFA();
             var e = voorbeeldNDFA();
-            Console.WriteLine("expressie");
-            Console.WriteLine(c.ToString());
-            Console.WriteLine("expressie -> ndfa");
-            Console.WriteLine(c.ToNDFA().ToString());
-            Console.WriteLine("get language");
-            Console.WriteLine(c.GetLanguage(3).ToString());
+            //Console.WriteLine("expressie");
+            //Console.WriteLine(c.ToString());
+            //Console.WriteLine("expressie -> ndfa");
+            //Console.WriteLine(c.ToNDFA().ToString());
+            //Console.WriteLine("get language");
+            //Console.WriteLine(c.GetLanguage(3).ToString());
 
-            Console.WriteLine("grammatica");
-            Console.WriteLine(b.ToString());
-            Console.WriteLine("grammatica -> NDFA");
-            Console.WriteLine(b.TransformToNDFA().ToString());
+            //Console.WriteLine("grammatica");
+            //Console.WriteLine(b.ToString());
+            //Console.WriteLine("grammatica -> NDFA");
+            //Console.WriteLine(b.TransformToNDFA().ToString());
 
-            Console.WriteLine("DFA");
-            Console.WriteLine(d.ToString());
-            Console.WriteLine("REVERSE DFA");
-            Console.WriteLine(d.Reverse().ToString());
+            //Console.WriteLine("DFA");
+            //Console.WriteLine(d.ToString());
+            //Console.WriteLine("REVERSE DFA");
+            //Console.WriteLine(d.Reverse().ToString());
             
-            Console.WriteLine("Ontkenning");
-            Console.WriteLine(d.Ontkenning().ToString());
+            //Console.WriteLine("Ontkenning");
+            //Console.WriteLine(d.Ontkenning().ToString());
 
-            Console.WriteLine("NDFA");
-            Console.WriteLine(e.ToString());
-            Console.WriteLine("NDFA -> DFA");
-            Console.WriteLine(e.ToDFA().ToString());
-            Console.WriteLine("NDFA -> Reguliere Grammatica");
-            Console.WriteLine(e.ToReguliereGrammatica().ToString());
+            //Console.WriteLine("NDFA");
+            //Console.WriteLine(e.ToString());
+            //Console.WriteLine("NDFA -> DFA");
+            //Console.WriteLine(e.ToDFA().ToString());
+            //Console.WriteLine("NDFA -> Reguliere Grammatica");
+            //Console.WriteLine(e.ToReguliereGrammatica().ToString());
 
             Console.WriteLine("Minimaliseren DFA");
             Console.WriteLine(minimaliserenDFA().ToString());

@@ -118,7 +118,7 @@ namespace Eindopdracht.NDFAAndDFA
             foreach (Toestand<T> t in Toestanden.Where(r=> StartSymbolen.Contains(r.Name)))
             {
                 var a = new Tuple<string, T>(t.Name, t.VolgendeToestand.Item2);
-                toestandenEnWaarJeHeenKan[a].Add(t.VolgendeToestand.Item1);
+                toestandenEnWaarJeHeenKan[a].UnionWith(t.VolgendeToestand.Item1.ToCharArray().Select(c => c.ToString()).ToList());
             }
             //vul de tabel aan met nieuwe waardes!
             for (int i = 0; i < toestandenEnWaarJeHeenKan.Count; i++)
