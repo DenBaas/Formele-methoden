@@ -41,7 +41,7 @@ namespace Eindopdracht.NDFAAndDFA
                 result += s1 + "\t";
             result += "\nEinde: ";
             foreach (string s2 in Eindtoestanden)
-                result += "'" +s2 + "'\t";
+                result += s2 + "\t";
             result += "\n";
             foreach (Toestand<T> t in Toestanden)
             {

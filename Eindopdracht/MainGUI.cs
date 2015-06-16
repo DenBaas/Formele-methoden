@@ -27,18 +27,25 @@ namespace Eindopdracht
         {
             if (InputBox.Text == "")
                 return;
-            Expressie expressie = new Expressie(InputBox.Text);
-            if (ToDFA.Checked)
+            try
             {
-                OutputBox.Text = expressie.ToNDFA().ToDFA().ToString();
+                Expressie expressie = new Expressie(InputBox.Text);
+                if (ToDFA.Checked)
+                {
+                    OutputBox.Text = expressie.ToNDFA().ToDFA().ToString();
+                }
+                if (ToNDFA.Checked)
+                {
+                    OutputBox.Text = expressie.ToNDFA().ToString();
+                }
+                if (ToReguliereGrammatica.Checked)
+                {
+                    OutputBox.Text = expressie.ToNDFA().ToReguliereGrammatica().ToString();
+                }
             }
-            if(ToNDFA.Checked)
+            catch(Exception exception)
             {
-                OutputBox.Text = expressie.ToNDFA().ToString();
-            }
-            if(ToReguliereGrammatica.Checked)
-            {
-                OutputBox.Text = expressie.ToNDFA().ToReguliereGrammatica().ToString();
+                OutputBox.Text += "da gaai nie! " + exception.ToString();
             }
         }
 

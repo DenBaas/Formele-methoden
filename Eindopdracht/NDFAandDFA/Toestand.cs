@@ -29,7 +29,9 @@ namespace Eindopdracht.NDFAAndDFA
 
         public override string ToString()
         {
-            return "Van " + Name + " naar: " + VolgendeToestand.Item1 + " met " + VolgendeToestand.Item2.ToString();
+            if (string.IsNullOrEmpty(VolgendeToestand.Item2.ToString()))
+                return "Van toestand '" + Name + "' naar toestand: '" + VolgendeToestand.Item1 + "' met " + ReguliereExpressie.Expressie.EPSILON;
+            return "Van toestand '" + Name + "' naar toestand: '" + VolgendeToestand.Item1 + "' met " + VolgendeToestand.Item2.ToString();
         }
 
         public bool Equals(Toestand<T> other)

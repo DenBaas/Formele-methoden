@@ -131,11 +131,12 @@ namespace Eindopdracht.ReguliereExpressie
             NDFA<object> ndfa = new NDFA<object>();
             bool orOperation = false;
             Stack<Tuple<int, Toestand<object>>> bracketLocations = new Stack<Tuple<int, Toestand<object>>>();
+            Stack<Toestand<object>> stuffInBrackets = new Stack<Toestand<object>>();
             int index = 0;
             foreach(char c in terminals){
-                Toestand<object> t = ndfa.Toestanden.LastOrDefault();
+                Toestand<object> t = ndfa.Toestanden.LastOrDefault(y => !y.VolgendeToestand.Item2.Equals(EPSILON));
                 if (t == null)
-                    t = new Toestand<object>("0", new Tuple<string, object>("1", EPSILON));
+                    t = new Toestand<object>("0", new Tuple<string, object>("0", EPSILON));
                 switch (c)
                 {
                     case '(':
@@ -143,20 +144,38 @@ namespace Eindopdracht.ReguliereExpressie
                         break;
                     case ')':
                         var indexLastBracket = bracketLocations.Pop();
-                        ndfa.Toestanden.Add(new Toestand<object>(t.VolgendeToestand.Item1, new Tuple<string,object>(indexLastBracket.Item2.Name,EPSILON)));
+                        Toestand<object> p = new Toestand<object>(t.VolgendeToestand.Item1, new Tuple<string,object>(indexLastBracket.Item2.Name,EPSILON));
+                        stuffInBrackets.Push(p);
                         break;
-                    case '*':                        
-                        //epsilon van vorige naar nieuwste
-                        Toestand<object> ts = new Toestand<object>(t.Name, new Tuple<string, object>(t.VolgendeToestand.Item1, EPSILON));
-                        //epsilon van nieuwste naar vorige
-                        Toestand<object> t3 = new Toestand<object>(t.VolgendeToestand.Item1, new Tuple<string, object>(t.Name, EPSILON));
-                        ndfa.Toestanden.Add(ts);
-                        ndfa.Toestanden.Add(t3);
+                    case '*':
+                        if (stuffInBrackets.Count == 0)
+                        {
+                            //epsilon van vorige naar nieuwste
+                            Toestand<object> ts = new Toestand<object>(t.Name, new Tuple<string, object>(t.VolgendeToestand.Item1, EPSILON));
+                            //epsilon van nieuwste naar vorige
+                            Toestand<object> t3 = new Toestand<object>(t.VolgendeToestand.Item1, new Tuple<string, object>(t.Name, EPSILON));
+                            ndfa.Toestanden.Add(ts);
+                            ndfa.Toestanden.Add(t3);
+                        }
+                        else
+                        {
+                            var t5 = stuffInBrackets.Pop();
+                            ndfa.Toestanden.Add(t5);
+                            ndfa.Toestanden.Add(new Toestand<object>(t5.VolgendeToestand.Item1, new Tuple<string, object>(t5.Name, EPSILON)));
+                        }
                         break;
                     case '+':
-                        //epsilon van nieuwste naar vorige
-                        Toestand<object> t4 = new Toestand<object>(t.VolgendeToestand.Item1, new Tuple<string, object>(t.Name, EPSILON));                        
-                        ndfa.Toestanden.Add(t4);
+                        if (stuffInBrackets.Count == 0)
+                        {
+                            //epsilon van nieuwste naar vorige
+                            Toestand<object> t4 = new Toestand<object>(t.VolgendeToestand.Item1, new Tuple<string, object>(t.Name, EPSILON));
+                            ndfa.Toestanden.Add(t4);
+                        }
+                        else
+                        {
+                            var t6 = stuffInBrackets.Pop();
+                            ndfa.Toestanden.Add(t6);
+                        }
                         break;
                     case '|':
                         orOperation = true;
