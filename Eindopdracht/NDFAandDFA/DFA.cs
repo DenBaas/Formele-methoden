@@ -14,8 +14,6 @@ namespace Eindopdracht.NDFAAndDFA
 
         }
 
-
-
         public DFA<T> Ontkenning()
         {
             DFA<T> dfa = new DFA<T>();
@@ -75,21 +73,19 @@ namespace Eindopdracht.NDFAAndDFA
         public DFA<T> Minimalize()
         {
             //toDFA (reverse (toDFA (reverse (dfa)))
-            Console.WriteLine("normaal");
-            Console.WriteLine(ToString() + "\n");
+            //Console.WriteLine("normaal");
+            //Console.WriteLine(ToString() + "\n");
             var a = Reverse();
-            Console.WriteLine("reverse1");
-            Console.WriteLine(a.ToString() + "\n" );
+            //Console.WriteLine("reverse1");
+            //Console.WriteLine(a.ToString() + "\n" );
             var b = a.ToDFA();
-            Console.WriteLine("dfa1");
-            Console.WriteLine(b.ToString() + "\n");
+            //Console.WriteLine("dfa1");
+            //Console.WriteLine(b.ToString() + "\n");
             var c = b.Reverse();
-            Console.WriteLine("reverse2");
-            Console.WriteLine(c.ToString() + "\n");
-            Console.WriteLine("dfa2");
+            //Console.WriteLine("reverse2");
+            //Console.WriteLine(c.ToString() + "\n");
+            //Console.WriteLine("dfa2");
             var d = c.ToDFA();
-            Console.WriteLine("resultaat");
-            Console.WriteLine(d.ToString() + "\n");
             return d;
         }
         //ToReguliereGrammatica

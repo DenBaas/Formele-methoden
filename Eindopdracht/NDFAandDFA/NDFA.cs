@@ -138,7 +138,7 @@ namespace Eindopdracht.NDFAAndDFA
                     newstate += c;
                 if (!toestandenEnWaarJeHeenKan.ContainsKey(new Tuple<string, T>(newstate, input.Item2)))
                     foreach(T t in Invoersymbolen)
-                        toestandenEnWaarJeHeenKan.Add(new Tuple<string, T>(newstate ,t), new SortedSet<string>());
+                        toestandenEnWaarJeHeenKan.Add(new Tuple<string, T>(newstate, t), new SortedSet<string>());
             }
             return toestandenEnWaarJeHeenKan;
         }

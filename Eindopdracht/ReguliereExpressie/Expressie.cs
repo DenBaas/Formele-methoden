@@ -11,6 +11,7 @@ namespace Eindopdracht.ReguliereExpressie
     public class Expressie//: IComparable
     {
         Operator op;
+        public const string EPSILON = "ԑ";
         String terminals;
         // De mogelijke operatoren voor een reguliere expressie (+, *, |, .) 
         // Daarnaast ook een operator definitie voor 1 keer repeteren (default)
@@ -128,11 +129,70 @@ namespace Eindopdracht.ReguliereExpressie
         public NDFA<object> ToNDFA()
         {
             NDFA<object> ndfa = new NDFA<object>();
-            Toestand<object> begin = new Toestand<object>("S", new Tuple<string, object>("F", '$'));
-            Toestand<object> eind = new Toestand<object>("F", new Tuple<string, object>("", '$'));
-            
+            bool orOperation = false;
+            Stack<Tuple<int, Toestand<object>>> bracketLocations = new Stack<Tuple<int, Toestand<object>>>();
+            int index = 0;
+            foreach(char c in terminals){
+                Toestand<object> t = ndfa.Toestanden.LastOrDefault();
+                if (t == null)
+                    t = new Toestand<object>("0", new Tuple<string, object>("1", EPSILON));
+                switch (c)
+                {
+                    case '(':
+                        bracketLocations.Push(new Tuple<int, Toestand<object>>(index, t));
+                        break;
+                    case ')':
+                        var indexLastBracket = bracketLocations.Pop();
+                        ndfa.Toestanden.Add(new Toestand<object>(t.VolgendeToestand.Item1, new Tuple<string,object>(indexLastBracket.Item2.Name,EPSILON)));
+                        break;
+                    case '*':                        
+                        //epsilon van vorige naar nieuwste
+                        Toestand<object> ts = new Toestand<object>(t.Name, new Tuple<string, object>(t.VolgendeToestand.Item1, EPSILON));
+                        //epsilon van nieuwste naar vorige
+                        Toestand<object> t3 = new Toestand<object>(t.VolgendeToestand.Item1, new Tuple<string, object>(t.Name, EPSILON));
+                        ndfa.Toestanden.Add(ts);
+                        ndfa.Toestanden.Add(t3);
+                        break;
+                    case '+':
+                        //epsilon van nieuwste naar vorige
+                        Toestand<object> t4 = new Toestand<object>(t.VolgendeToestand.Item1, new Tuple<string, object>(t.Name, EPSILON));                        
+                        ndfa.Toestanden.Add(t4);
+                        break;
+                    case '|':
+                        orOperation = true;
+                        break;
+                    default:
+                        if(orOperation)
+                        {
+                            ndfa.Toestanden.Add(new Toestand<object>(t.Name, new Tuple<string, object>(t.VolgendeToestand.Item1, c.ToString())));
+                        }
+                        else
+                        {
+                            if(ndfa.Toestanden.Count == 0)
+                                ndfa.Toestanden.Add(new Toestand<object>("0", new Tuple<string, object>((ndfa.Toestanden.Count + 1).ToString(), c.ToString())));
+                            else
+                                ndfa.Toestanden.Add(new Toestand<object>(t.VolgendeToestand.Item1, new Tuple<string, object>((ndfa.Toestanden.Count + 1).ToString(), c.ToString())));
+                        }
+                            
+                        orOperation = false;
+                        break;
+                }
+                index++;
+            }
+            ndfa.StartSymbolen.Add(ndfa.Toestanden.First().Name);
+            int eindtoestand = 0;
+            foreach (var r in ndfa.Toestanden)
+            {
+                if (eindtoestand < int.Parse(r.VolgendeToestand.Item1))
+                    eindtoestand = int.Parse(r.VolgendeToestand.Item1);
+                if (!r.VolgendeToestand.Item2.Equals(EPSILON))
+                    ndfa.Invoersymbolen.Add(r.VolgendeToestand.Item2);
+            }
+            ndfa.Eindtoestanden.Add(eindtoestand.ToString());
             return ndfa;
         }
+
+
 
         public bool Equals(Expressie other)
         {
