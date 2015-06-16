@@ -43,5 +43,11 @@ namespace Eindopdracht.NDFAAndDFA
             else
                 return false;
         }
+
+        public static Toestand<char> CreateToestand(string s)
+        {
+            var letters = s.ToCharArray();
+            return new Toestand<char>(s[0].ToString(),new Tuple<string,char>(s[1].ToString(),s[2]));
+        }
     }
 }

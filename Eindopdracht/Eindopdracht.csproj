@@ -54,7 +54,6 @@
       <DependentUpon>MainGUI.cs</DependentUpon>
     </Compile>
     <Compile Include="NDFAandDFA\DFA.cs" />
-    <Compile Include="ReguliereExpressie\ThompsonConstruction.cs" />
     <Compile Include="NDFAandDFA\Toestand.cs" />
     <Compile Include="ReguliereExpressie\Expressie.cs" />
     <Compile Include="ReguliereGrammatica\Grammatica.cs" />

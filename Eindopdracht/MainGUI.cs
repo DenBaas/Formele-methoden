@@ -1,4 +1,5 @@
-﻿using Eindopdracht.ReguliereExpressie;
+﻿using Eindopdracht.NDFAAndDFA;
+using Eindopdracht.ReguliereExpressie;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,27 +28,60 @@ namespace Eindopdracht
         {
             if (InputBox.Text == "")
                 return;
-            try
+            if (radioButton1.Checked)
             {
-                Expressie expressie = new Expressie(InputBox.Text);
+                try
+                {
+                    Expressie expressie = new Expressie(InputBox.Text);
+                    if (ToDFA.Checked)
+                    {
+                        OutputBox.Text = expressie.ToNDFA().ToDFA().ToString();
+                    }
+                    if (ToNDFA.Checked)
+                    {
+                        OutputBox.Text = expressie.ToNDFA().ToString();
+                    }
+                    if (ToReguliereGrammatica.Checked)
+                    {
+                        OutputBox.Text = expressie.ToNDFA().ToReguliereGrammatica().ToString();
+                    }
+                }
+                catch (Exception exception)
+                {
+                    OutputBox.Text += "da gaai nie! " + exception.ToString();
+                }
+            }
+            else if (radioButton2.Checked)
+            {
+                NDFA<char> ndfa = new NDFA<char>();
+                for (int x = 0; x < InputBox.Lines.Count(); x++)
+                {
+                    string temp = InputBox.Lines[x];
+                    if (temp.StartsWith("begin"))
+                        ndfa.StartSymbolen.Add(temp.Last().ToString());
+                    else if (temp.StartsWith("eind"))
+                        ndfa.Eindtoestanden.Add(temp.Last().ToString());
+                    else ndfa.Toestanden.Add(Toestand<char>.CreateToestand(temp));
+                    foreach (var t in ndfa.Toestanden)
+                    {
+                        ndfa.Invoersymbolen.Add(t.VolgendeToestand.Item2);
+                    }
+                }
                 if (ToDFA.Checked)
                 {
-                    OutputBox.Text = expressie.ToNDFA().ToDFA().ToString();
+                    OutputBox.Text = ndfa.ToDFA().ToString();
                 }
                 if (ToNDFA.Checked)
                 {
-                    OutputBox.Text = expressie.ToNDFA().ToString();
+                    OutputBox.Text = ndfa.ToString();
                 }
                 if (ToReguliereGrammatica.Checked)
                 {
-                    OutputBox.Text = expressie.ToNDFA().ToReguliereGrammatica().ToString();
+                    OutputBox.Text = ndfa.ToReguliereGrammatica().ToString();
                 }
             }
-            catch(Exception exception)
-            {
-                OutputBox.Text += "da gaai nie! " + exception.ToString();
-            }
         }
+        
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
