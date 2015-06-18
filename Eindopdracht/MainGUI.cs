@@ -14,6 +14,7 @@ namespace Eindopdracht
 {
     public partial class MainGUI : Form
     {
+        private NDFA<char> outputNDFA = null;
         public MainGUI()
         {
             InitializeComponent();
@@ -33,22 +34,36 @@ namespace Eindopdracht
                 try
                 {
                     Expressie expressie = new Expressie(InputBox.Text);
+                    outputNDFA = expressie.ToNDFA();
                     if (ToDFA.Checked)
                     {
-                        OutputBox.Text = expressie.ToNDFA().ToDFA().ToString();
+                        OutputBox.Text = outputNDFA.ToDFA().ToString();
                     }
                     if (ToNDFA.Checked)
                     {
-                        OutputBox.Text = expressie.ToNDFA().ToString();
+                        OutputBox.Text = outputNDFA.ToString();
                     }
                     if (ToReguliereGrammatica.Checked)
                     {
-                        OutputBox.Text = expressie.ToNDFA().ToReguliereGrammatica().ToString();
+                        OutputBox.Text = outputNDFA.ToReguliereGrammatica().ToString();
                     }
+                    string output = "diagraph finite_state_machine {\n";
+                    foreach (var t in outputNDFA.Eindtoestanden)
+                    {
+                        output += "node [shape = doublecircle]; " + t + " ;\n";
+                    }
+                    output += "node [shape = circle];\n";
+                    foreach (var t in outputNDFA.Toestanden)
+                    {
+                        output += t.Name + " -> " + t.VolgendeToestand.Item1 + " [label=\"" + t.VolgendeToestand.Item2.ToString() + "\"];"+ "\n";
+                    }
+                    output += "label=\"" + InputBox.Text + "\";\n}";
+                    //OutputBox.Text = output;
+                    System.IO.File.WriteAllText(@"C:\Users\Bas\Documents\school\jaar 3\Periode 4\Formele methoden\Formele-methoden\output.dot", output);
                 }
                 catch (Exception exception)
                 {
-                    OutputBox.Text += "da gaai nie! " + exception.ToString();
+                    OutputBox.Text += "dat gaat niet \n" + exception.ToString();
                 }
             }
             else if (radioButton2.Checked)
@@ -79,7 +94,9 @@ namespace Eindopdracht
                 {
                     OutputBox.Text = ndfa.ToReguliereGrammatica().ToString();
                 }
+                outputNDFA = ndfa;
             }
+           
         }
         
 
@@ -101,14 +118,25 @@ namespace Eindopdracht
         private void clearButton_Click(object sender, EventArgs e)
         {
             InputBox.Text = OutputBox.Text = "";
+            outputNDFA = null;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             if (InputBox.Text == "")
                 return;
-            Expressie expressie = new Expressie(InputBox.Text);
-            OutputBox.Text = "Minimalisatie:\n" +expressie.ToNDFA().ToDFA().Minimalize().ToString();
+            if (outputNDFA == null)
+            {
+                Expressie expressie = new Expressie(InputBox.Text);
+                outputNDFA = expressie.ToNDFA();
+            }
+            OutputBox.Text = outputNDFA.ToDFA().Minimalize().ToString();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            radioButton2.Checked = true;
+            InputBox.Text = "00a\n01b\n12a\n11b\n20a\n23b\n34a\n32b\n45a\n43b\n50a\n53b\nbegin 0\neind 4";
         }
     }
 }
